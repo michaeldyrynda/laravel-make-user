@@ -2,8 +2,6 @@
 
 namespace Tests;
 
-use Tests\User;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
