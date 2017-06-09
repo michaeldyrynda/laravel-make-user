@@ -43,6 +43,18 @@ This package is installed via [Composer](https://getcomposer.org/). To install, 
 composer require "dyrynda/laravel-make-user:~1.0"
 ```
 
+Then add the service provider to your `app/config.php` file:
+
+```php
+'providers' => [
+    // ...
+    Dyrynda\Artisan\MakeUserServiceProvider::class,
+    // ...
+]
+```
+
+Note, this package has support for Laravel's auto package discovery, which will be available from version 5.5 onwards.
+
 ## Support
 
 If you are having general issues with this package, feel free to contact me on [Twitter](https://twitter.com/michaeldyrynda).
