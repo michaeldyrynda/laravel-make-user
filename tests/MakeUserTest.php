@@ -5,9 +5,9 @@ namespace Tests;
 use Tests\User;
 use Tests\TestCase;
 use Illuminate\Support\Manager;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Auth\Passwords\ResetPasswordNotification;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class MakeUserTest extends TestCase
 {
@@ -16,22 +16,18 @@ class MakeUserTest extends TestCase
     {
         Artisan::call('make:user', ['email' => 'invalidemail']);
 
-        $this->assertContains('The user was not created', Artisan::output());
         $this->assertFalse(User::where('email', 'invalidemail')->exists());
     }
 
     /** @test */
     public function it_sends_the_password_reset_email_when_generating_a_password()
     {
-        Mail::fake();
+        Notification::fake();
 
         Artisan::call('make:user', ['email' => 'michael@dyrynda.com.au', '--name' => 'Michael Dyrynda']);
 
-        // Mail::assertSent(ResetPasswordNotification::class, function ($mail) {
-        //     return $mail->hasTo('michael@dyrynda.com.au');
-        // });
+        Notification::assertSentTo(User::first(), ResetPassword::class);
 
-        $this->assertContains('Sent password reset email to', Artisan::output());
         $this->assertTrue(User::where($credentials = [
             'email' => 'michael@dyrynda.com.au',
             'name' => 'Michael Dyrynda',
