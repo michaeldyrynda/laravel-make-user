@@ -10,10 +10,12 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'admin'
     ];
 
     protected $hidden = [
         'password', 'api_token', 'remember_token',
     ];
+
+    protected $casts = ['admin' => 'bool'];
 }
