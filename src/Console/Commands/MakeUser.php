@@ -4,7 +4,6 @@ namespace Dyrynda\Artisan\Console\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
 
@@ -75,7 +74,7 @@ class MakeUser extends Command
      * Determine if the given email address already exists.
      *
      * @param  string  $email
-     * @return bool
+     * @return void
      *
      * @throws \Dyrynda\Artisan\Exceptions\MakeUserException
      */

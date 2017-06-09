@@ -8,7 +8,7 @@ class MakeUserException extends InvalidArgumentException
 {
     /**
      * The supplied email is invalid.
-
+     *
      * @param  string  $email
      * @return \Dyrynda\Artisan\Exceptions\MakeUserException
      */
