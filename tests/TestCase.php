@@ -4,6 +4,7 @@ namespace Tests;
 
 use Tests\User;
 use Dyrynda\Artisan\MakeUserServiceProvider;
+use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -12,13 +13,16 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->loadLaravelMigrations('testing');
+
+        $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
     }
 
     protected function getPackageProviders($app)
     {
         return [
             MakeUserServiceProvider::class,
+            ConsoleServiceProvider::class,
         ];
     }
 
