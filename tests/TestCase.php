@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Tests\User;
 use Dyrynda\Artisan\MakeUserServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
