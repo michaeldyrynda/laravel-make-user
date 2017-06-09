@@ -54,12 +54,12 @@ class MakeUser extends Command
             ));
 
             if ($sendReset) {
-                Password::sendResetLink(['email' => $email]);
+                Password::sendResetLink(compact('email'));
 
-                $this->info('Sent password reset email to '.$email);
+                $this->info("Sent password reset email to {$email}");
             }
 
-            $this->info('Created new user for email '.$email);
+            $this->info("Created new user for email {$email}");
 
             app('db')->commit();
         } catch (Exception $e) {
