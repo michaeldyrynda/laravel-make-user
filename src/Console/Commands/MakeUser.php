@@ -48,7 +48,7 @@ class MakeUser extends Command
 
             $this->validateEmail($email);
 
-            $user = app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
+            app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
                 compact('email', 'name', 'password'),
                 $this->additionalFields()
             ));
