@@ -29,5 +29,6 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
+        $app['router']->get('/password/reset')->name('password.reset');
     }
 }

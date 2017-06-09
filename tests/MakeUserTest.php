@@ -32,7 +32,10 @@ class MakeUserTest extends TestCase
         // });
 
         $this->assertContains('Sent password reset email to', Artisan::output());
-        $this->assertTrue(User::where('email', 'michael@dyrynda.com.au')->exists());
-        $this->assertEquals(1, User::where('email', 'michael@dyrynda.com.au')->count());
+        $this->assertTrue(User::where($credentials = [
+            'email' => 'michael@dyrynda.com.au',
+            'name' => 'Michael Dyrynda',
+        ])->exists());
+        $this->assertEquals(1, User::where($credentials)->count());
     }
 }
