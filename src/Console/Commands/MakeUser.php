@@ -115,6 +115,10 @@ class MakeUser extends Command
      */
     private function normaliseValue($value)
     {
+        if ($value == 'null') {
+            return null;
+        }
+
         if (in_array($value, [1, 'true', true], true)) {
             return true;
         }

@@ -90,6 +90,16 @@ class MakeUserTest extends TestCase
     }
 
     /** @test */
+    public function it_handles_null_field_values_correctly()
+    {
+        Artisan::call('make:user', ['email' => 'michael@dyrynda.com.au', '--fields' => 'force_filled:null']);
+
+        tap(User::first(), function ($user) {
+            $this->assertNull($user->force_filled);
+        });
+    }
+
+    /** @test */
     public function it_force_filles_guarded_properties_when_instructed()
     {
         Artisan::call('make:user', [
