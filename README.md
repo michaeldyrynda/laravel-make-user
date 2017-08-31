@@ -1,5 +1,5 @@
 # Laravel Make User
-## v1.0.2
+## v2.0.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -16,6 +16,8 @@ Out of the box, Laravel makes it really simple to scaffold out with its [authent
 I still need a way to get users into those applications, however, and whilst they're in early development this usually involves firing up Laravel Tinker. This can be a tedious process, and one that I repeat many times over.
 
 This package aims to solve the repetition problem by providing a convenient `make:user` Artisan command.
+
+This package supports Laravel 5.5 as of verion 2.0.0.
 
 ## Code Samples
 
@@ -40,7 +42,7 @@ This will create a new user with the email address `user@example.com`, a randoml
 This package is installed via [Composer](https://getcomposer.org/). To install, run the following command.
 
 ```bash
-composer require "dyrynda/laravel-make-user:~1.0"
+composer require "dyrynda/laravel-make-user:~2.0"
 ```
 
 Then add the service provider to your `app/config.php` file:
