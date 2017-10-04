@@ -17,7 +17,12 @@ I still need a way to get users into those applications, however, and whilst the
 
 This package aims to solve the repetition problem by providing a convenient `make:user` Artisan command.
 
-This package supports Laravel 5.5 as of verion 2.0.0.
+### Version compatibility
+
+Laravel | Package
+:-------|:--------
+5.4.*   | 1.0.*
+5.5.*   | 2.0.*
 
 ## Code Samples
 
