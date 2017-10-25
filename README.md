@@ -50,7 +50,7 @@ This package is installed via [Composer](https://getcomposer.org/). To install, 
 composer require "dyrynda/laravel-make-user:~2.0"
 ```
 
-Then add the service provider to your `app/config.php` file:
+Then add the service provider to your `config/app.php` file:
 
 ```php
 'providers' => [
