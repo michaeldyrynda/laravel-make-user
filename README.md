@@ -1,5 +1,5 @@
 # Laravel Make User
-## v2.0.0
+## v3.0.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -23,6 +23,7 @@ Laravel | Package
 :-------|:--------
 5.4.*   | 1.0.*
 5.5.*   | 2.0.*
+5.6.*   | 3.0.*
 
 ## Code Samples
 
@@ -47,7 +48,7 @@ This will create a new user with the email address `user@example.com`, a randoml
 This package is installed via [Composer](https://getcomposer.org/). To install, run the following command.
 
 ```bash
-composer require "dyrynda/laravel-make-user:~2.0"
+composer require "dyrynda/laravel-make-user:~3.0"
 ```
 
 Then add the service provider to your `config/app.php` file:
