@@ -3,9 +3,13 @@
 namespace Dyrynda\Artisan\Console\Commands;
 
 use Exception;
+use SplFileInfo;
+use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
+use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
+use Dyrynda\Artisan\Exceptions\BulkImportFileException;
 
 class MakeUser extends Command
 {
@@ -14,18 +18,22 @@ class MakeUser extends Command
      *
      * @var string
      */
-    protected $signature = 'make:user {email} {--name=      : Set the name for the new user}
-                                              {--password=  : The password to set for the new user}
-                                              {--send-reset : Send a password reset email for the new user}
-                                              {--fields=    : Additional database fields to set on the user}
-                                              {--force      : Create the user model circumventing guarded fields}';
+    protected $signature = 'make:user
+                                {--email=       : Set the email for the new user}
+                                {--name=        : Set the name for the new user}
+                                {--password=    : The password to set for the new user}
+                                {--send-reset   : Send a password reset email for the new user}
+                                {--fields=      : Additional database fields to set on the user}
+                                {--force        : Create the user model circumventing guarded fields}
+                                {--import-file= : Relative path and filename for a file to import users from. File name MUST contain the extension representing the type of file (Ex: ./path/to/file.csv)}
+    ';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new application user';
+    protected $description = 'Create new application users';
 
     /**
      * Execute the console command.
@@ -36,35 +44,72 @@ class MakeUser extends Command
      */
     public function handle()
     {
-        $email = $this->argument('email');
-        $name = $this->option('name') ?: '';
-        $password = bcrypt($this->option('password') ?: str_random(32));
-        $modelCommand = $this->option('force') ? 'forceCreate' : 'create';
-        $sendReset = ! $this->option('password') || $this->option('send-reset');
-
         try {
-            app('db')->beginTransaction();
+            $bulkImportFile = $this->option('import-file') ? $this->FileHandlerFactory($this->option('import-file')) : null;
 
-            $this->validateEmail($email);
+            $modelCommand = $this->option('force') ? 'forceCreate' : 'create';
 
-            app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
-                compact('email', 'name', 'password'),
-                $this->additionalFields()
-            ));
+            if (! is_null($bulkImportFile)) {
+                $dataToProcess = $bulkImportFile->getData();
 
-            if ($sendReset) {
-                Password::sendResetLink(compact('email'));
+                $sendReset = false;
 
-                $this->info("Sent password reset email to {$email}");
+                if (! in_array('password', array_keys($dataToProcess[0]))) {
+                    $dataToProcess = $this->setDefaultPassword($dataToProcess);
+                    $sendReset = true;
+                }
+
+            } else {
+                $email = $this->option('email');
+                $name = $this->option('name') ?: '';
+                $password = bcrypt($this->option('password') ?: str_random(32));
+                $sendReset = ! $this->option('password') || $this->option('send-reset');
+
+                $dataToProcess[0] = [
+                    'email' => $email,
+                    'name' => $name,
+                    'password' => $password,
+                ];
             }
 
-            $this->info("Created new user for email {$email}");
+            foreach ($dataToProcess as $dataRow) {
 
-            app('db')->commit();
+                $email    = $dataRow['email'] ?? null; 
+
+                app('db')->beginTransaction();
+
+                $this->validateEmail($email);
+
+                app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
+                    $dataRow,
+                    $bulkImportFile ? [] : $this->additionalFields()
+                ));
+
+                if ($sendReset) {
+                    Password::sendResetLink(compact('email'));
+                }
+
+                app('db')->commit();
+            }
+
+            $createdMessage = $bulkImportFile
+                ? "Created " . count($dataToProcess) . " user(s)."
+                : "Created new user for email {$email}.";
+
+            $passwordResetMessage =  $bulkImportFile
+                ? "Sent password reset emails."
+                : "Sent password reset email to {$email}.";
+
+            $this->info($createdMessage);
+
+            if ($sendReset) {
+                $this->info($passwordResetMessage);
+            }
+
         } catch (Exception $e) {
             $this->error($e->getMessage());
 
-            $this->error('The user was not created');
+            $this->error('The user(s) were not created');
 
             app('db')->rollBack();
         }
@@ -128,5 +173,28 @@ class MakeUser extends Command
         }
 
         return trim($value);
+    }
+
+
+    private function FileHandlerFactory($path)
+    {
+        if (! strpos($path, '.')) {
+            throw BulkImportFileException:: noExtension();
+        }
+
+        $file = new SplFileInfo($path);
+
+        if (! class_exists($class = '\\Dyrynda\\Artisan\\BulkImport\\Handlers\\' . studly_case($file->getExtension()))) {
+            throw BulkImportFileException:: unsupported($file->getExtension());
+        }
+
+        return new $class($path);
+    }
+
+    private function setDefaultPassword($data)
+    {
+        return collect($data)->map(function($row){
+            return array_merge(['password' => str_random(32)], $row);
+        })->all();
     }
 }
