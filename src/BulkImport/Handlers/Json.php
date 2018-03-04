@@ -2,8 +2,8 @@
 
 namespace Dyrynda\Artisan\BulkImport\Handlers;
 
+use Dyrynda\Artisan\Exceptions\ImportFileException;
 use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
-use Dyrynda\Artisan\Exceptions\BulkImportFileException;
 
 class Json extends Base implements BulkImportFileHandler
 {
@@ -17,18 +17,23 @@ class Json extends Base implements BulkImportFileHandler
         $data = json_decode(file_get_contents($this->filePath), true);
 
         if (json_last_error()) {
-            throw BulkImportFileException::invalidSyntax($this->file->getFilename());
+            throw ImportFileException::invalidSyntax($this->file->getFilename());
         }
         
         $fields = array_keys($data[0]);
 
         foreach ($data as $row) {
            if (count($fields) != count($row) || count(array_intersect($fields, array_keys($row))) != count($fields)) {
-                throw BulkImportFileException::invalidSyntax($this->file->getFilename(), 'Fields not consistent');
+                throw ImportFileException::invalidSyntax($this->file->getFilename(), 'Fields not consistent');
            }
         }
     }
-
+    
+    /**
+     * Get list of columns from the file
+     *
+     * @return array
+     */
     protected function getFields()
     {
         $data = json_decode(file_get_contents($this->filePath), true);

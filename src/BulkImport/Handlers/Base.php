@@ -3,7 +3,7 @@
 namespace Dyrynda\Artisan\BulkImport\Handlers;
 
 use SplFileInfo;
-use Dyrynda\Artisan\Exceptions\BulkImportFileException;
+use Dyrynda\Artisan\Exceptions\ImportFileException;
 
 abstract class Base 
 {
@@ -12,22 +12,35 @@ abstract class Base
 	protected $filePath;
 	protected $fileHandle;
 
-	public function __construct($filePath)
+    /**
+     * Base constructor.
+     * @param $filePath
+     *
+     * @throws \Dyrynda\Artisan\Exceptions\ImportFileException
+     */
+    public function __construct($filePath)
 	{
         $this->filePath = $filePath;
 
         $this->file = new SplFileInfo($filePath);
 
         if (! $this->file->getExtension()) {
-            throw BulkImportFileException::noExtension();
+            throw ImportFileException::noExtension();
         }
         
         if (! $this->file->isFile()) {
-            throw BulkImportFileException::notExist($filePath);
+            throw ImportFileException::notExist($filePath);
         }
         
 		$this->fileHandle = $this->file->openFile();
 
         $this->validateSyntax();
 	}
+
+    /**
+     * Checks file for valid syntax
+     *
+     * @throws \Dyrynda\Artisan\Exceptions\ImportFileException
+     */
+    abstract protected function validateSyntax();
 }

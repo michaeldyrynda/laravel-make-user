@@ -4,12 +4,11 @@ namespace Dyrynda\Artisan\Console\Commands;
 
 use Exception;
 use SplFileInfo;
-use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
+use Dyrynda\Artisan\Exceptions\ImportFileException;
 use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
-use Dyrynda\Artisan\Exceptions\BulkImportFileException;
 
 class MakeUser extends Command
 {
@@ -45,7 +44,7 @@ class MakeUser extends Command
     public function handle()
     {
         try {
-            $bulkImportFile = $this->option('import-file') ? $this->FileHandlerFactory($this->option('import-file')) : null;
+            $bulkImportFile = $this->option('import-file') ? $this->fileHandlerFactory($this->option('import-file')) : null;
 
             $modelCommand = $this->option('force') ? 'forceCreate' : 'create';
 
@@ -74,7 +73,7 @@ class MakeUser extends Command
 
             foreach ($dataToProcess as $dataRow) {
 
-                $email    = $dataRow['email'] ?? null; 
+                $email = $dataRow['email'] ?? null;
 
                 app('db')->beginTransaction();
 
@@ -175,22 +174,36 @@ class MakeUser extends Command
         return trim($value);
     }
 
-
-    private function FileHandlerFactory($path)
+    /**
+     * Create file handler objects
+     *
+     * @param string  $path
+     * @return BulkImportFileHandler
+     *
+     * @throws \Dyrynda\Artisan\Exceptions\ImportFileException
+     */
+    private function fileHandlerFactory($path) : BulkImportFileHandler
     {
         if (! strpos($path, '.')) {
-            throw BulkImportFileException:: noExtension();
+            throw ImportFileException::noExtension();
         }
 
         $file = new SplFileInfo($path);
 
         if (! class_exists($class = '\\Dyrynda\\Artisan\\BulkImport\\Handlers\\' . studly_case($file->getExtension()))) {
-            throw BulkImportFileException:: unsupported($file->getExtension());
+            throw ImportFileException::unsupported($file->getExtension());
         }
 
         return new $class($path);
     }
 
+    /**
+     * Add default password to data
+     *
+     * @param array  $data
+     * @return array
+     *
+     */
     private function setDefaultPassword($data)
     {
         return collect($data)->map(function($row){

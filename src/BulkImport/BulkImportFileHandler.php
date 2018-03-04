@@ -5,5 +5,11 @@ namespace Dyrynda\Artisan\BulkImport;
 interface BulkImportFileHandler
 {
 	public function __construct($filePath);
-	public function getData();
+
+    /**
+     * Retrieve data from file
+     *
+     * @return array
+     */
+    public function getData();
 }

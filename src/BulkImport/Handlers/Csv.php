@@ -3,8 +3,8 @@
 namespace Dyrynda\Artisan\BulkImport\Handlers;
 
 use SplFileObject;
+use Dyrynda\Artisan\Exceptions\ImportFileException;
 use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
-use Dyrynda\Artisan\Exceptions\BulkImportFileException;
 
 class Csv extends Base implements BulkImportFileHandler
 {
@@ -41,11 +41,16 @@ class Csv extends Base implements BulkImportFileHandler
 
         foreach ($this->fileHandle as $row) {
             if (count($fields) != count(explode(',', $row))) {
-                throw BulkImportFileException::invalidSyntax($this->file->getFilename());
+                throw ImportFileException::invalidSyntax($this->file->getFilename());
             }
         }
     }
 
+    /**
+     * Get list of columns from the file
+     *
+     * @return array
+     */
     protected function getFields()
     {
         $this->fileHandle->rewind();
