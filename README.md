@@ -43,6 +43,38 @@ php artisan make:user user@example.com --fields="admin:true,other_field:other va
 
 This will create a new user with the email address `user@example.com`, a randomly generated password, send the password reset email to `user@example.com`, and set the `admin` field to `true`. Should you need to circumvent your user model's guarded fields, you can pass the `--force` option, and the user model will be created using the `forceCreate` method.
 
+## Bulk Imports
+Bulk imports via CSV and JSON files are possible using the `--import-file` option. 
+
+```
+php artisan make:user --import-file=./dumps/users.json
+```
+
+ `--import-file` takes a path and filename to import users from. The filename **MUST** contain the extension representing the type of file being used. If the import file doesnt contain a password field then the `--send-reset` option is implicit.  A default password will be generated and a password reset notification sent to the user. Data for additional columns may also be included in the import files with support from the `--force` option as described previously.
+ 
+ Sample JSON file:
+ ```
+[
+	{
+		"email" : "jon@email.com",
+		"name" : "jon doe",
+		"password" : "mysecurepassword",
+		"avatar" : "avatar.jpg"
+	},
+
+	{
+		"email" : "jane@email.com",
+		"name" : "jane doe",
+		"password" : "mysecurepassword",        
+		"avatar" : "avatar2.jpg"
+	}
+]
+
+```
+ 
+NOTE: When  `--import-file` is used, the `--email`,  `--password`, `--name`, `--fields` options are ignored. 
+
+
 ## Installation
 
 This package is installed via [Composer](https://getcomposer.org/). To install, run the following command.
