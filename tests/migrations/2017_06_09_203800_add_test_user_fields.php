@@ -14,7 +14,7 @@ class AddTestUserFields extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('admin')->default(false);
+            $table->boolean('admin')->nullable()->default(false);
             $table->string('force_filled')->nullable()->default(null);
         });
     }

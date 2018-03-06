@@ -11,6 +11,8 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
+        $this->destroyFiles();
+
         $this->loadLaravelMigrations('testing');
 
         $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
@@ -31,5 +33,23 @@ abstract class TestCase extends Orchestra
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
         $app['router']->get('/password/reset')->name('password.reset');
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $this->destroyFiles();
+    }
+
+    private function destroyFiles()
+    {
+        @unlink($this->getFilePath('csv'));
+        @unlink($this->getFilePath('json'));
+    }
+
+    public function getFilePath($ext)
+    {
+        return realpath(realpath(__DIR__) . '/../storage/framework/testing').'/import.'.$ext;
     }
 }
