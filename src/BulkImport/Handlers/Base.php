@@ -5,7 +5,7 @@ namespace Dyrynda\Artisan\BulkImport\Handlers;
 use SplFileInfo;
 use Dyrynda\Artisan\Exceptions\ImportFileException;
 
-abstract class Base 
+abstract class Base
 {
     protected $file;
     protected $fields;
@@ -27,11 +27,11 @@ abstract class Base
         if (! $this->file->getExtension()) {
             throw ImportFileException::noExtension();
         }
-        
+
         if (! $this->file->isFile()) {
             throw ImportFileException::notExist($filePath);
         }
-        
+
         $this->fileHandle = $this->file->openFile();
 
         $this->validateSyntax();

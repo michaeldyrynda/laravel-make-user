@@ -19,13 +19,13 @@ class Json extends Base implements BulkImportFileHandler
         if (json_last_error()) {
             throw ImportFileException::invalidSyntax($this->file->getFilename());
         }
-        
+
         $fields = array_keys($data[0]);
 
         foreach ($data as $row) {
-           if (count($fields) != count($row) || count(array_intersect($fields, array_keys($row))) != count($fields)) {
+            if (count($fields) != count($row) || count(array_intersect($fields, array_keys($row))) != count($fields)) {
                 throw ImportFileException::invalidSyntax($this->file->getFilename(), 'Fields not consistent');
-           }
+            }
         }
     }
 

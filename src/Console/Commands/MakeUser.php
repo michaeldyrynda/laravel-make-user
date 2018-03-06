@@ -98,7 +98,7 @@ class MakeUser extends Command
                     ? 'Created '.count($dataToProcess).' user(s).'
                     : "Created new user for email {$email}.";
 
-                $passwordResetMessage =  $bulkImportFile
+                $passwordResetMessage = $bulkImportFile
                     ? 'Sent password reset emails.'
                     : "Sent password reset email to {$email}.";
 
@@ -213,7 +213,7 @@ class MakeUser extends Command
      */
     private function setPasswords($data)
     {
-        return collect($data)->map(function($row){
+        return collect($data)->map(function ($row){
             return array_merge(
                 $row,
                 ! isset($row['password']) ? ['password' => str_random(32)] : ['password' => bcrypt($row['password'])]
