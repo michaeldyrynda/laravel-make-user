@@ -95,11 +95,11 @@ class MakeUser extends Command
 
             if (count($dataToProcess)) {
                 $createdMessage = $bulkImportFile
-                    ? "Created " . count($dataToProcess) . " user(s)."
+                    ? 'Created '.count($dataToProcess).' user(s).'
                     : "Created new user for email {$email}.";
 
                 $passwordResetMessage =  $bulkImportFile
-                    ? "Sent password reset emails."
+                    ? 'Sent password reset emails.'
                     : "Sent password reset email to {$email}.";
 
                 $this->info($createdMessage);
@@ -107,7 +107,7 @@ class MakeUser extends Command
                 if ($sendReset) {
                     $this->info($passwordResetMessage);
                 }
-                
+
             } else {
                 $this->error('The user(s) were not created');
             }
@@ -182,7 +182,7 @@ class MakeUser extends Command
     }
 
     /**
-     * Create file handler objects
+     * Create file handler objects.
      *
      * @param string  $path
      * @return BulkImportFileHandler
@@ -197,7 +197,7 @@ class MakeUser extends Command
 
         $file = new SplFileInfo($path);
 
-        if (! class_exists($class = '\\Dyrynda\\Artisan\\BulkImport\\Handlers\\' . studly_case($file->getExtension()))) {
+        if (! class_exists($class = '\\Dyrynda\\Artisan\\BulkImport\\Handlers\\'.studly_case($file->getExtension()))) {
             throw ImportFileException::unsupported($file->getExtension());
         }
 
@@ -205,7 +205,7 @@ class MakeUser extends Command
     }
 
     /**
-     * Add default password to data
+     * Add default password to data.
      *
      * @param array  $data
      * @return array

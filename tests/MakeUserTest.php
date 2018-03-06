@@ -118,7 +118,6 @@ class MakeUserTest extends TestCase
     //----------------------------------------------------------------------------------
     // BULK IMPORT TESTS
     //----------------------------------------------------------------------------------
-    
     /** @test */
     public function it_requires_a_file_with_extension()
     {
@@ -234,7 +233,7 @@ class MakeUserTest extends TestCase
         ]);
 
         $this->assertFileNotCreatedMsg();
-    } 
+    }
 
     /** @test */
     public function it_imports_csv_and_hashes_the_password()
@@ -379,8 +378,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
             $this->assertEquals($user->admin, true);
         });
     }
@@ -403,8 +402,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
             $this->assertNull($user->admin);
         });        
     }
@@ -428,8 +427,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
             $this->assertNull($user->force_filled);
         }); 
     }
@@ -453,8 +452,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
             $this->assertEquals("it works", $user->force_filled);            
         });
     }
@@ -479,8 +478,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
         });
     }
 
@@ -505,8 +504,8 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
         });
     }
 
@@ -532,12 +531,12 @@ class MakeUserTest extends TestCase
 
         tap(User::first(), function ($user) {
             $this->assertNotNull($user);
-            $this->assertEquals($user->name, "jon");
-            $this->assertEquals($user->email, "jon@email.com");
+            $this->assertEquals($user->name, 'jon');
+            $this->assertEquals($user->email, 'jon@email.com');
         });
     }
 
-    private function createFile($contents = '', $type)
+    private function createFile($contents, $type)
     {
         file_put_contents($this->getFilePath($type), $contents);
     }

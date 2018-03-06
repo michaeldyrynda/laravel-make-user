@@ -14,7 +14,7 @@ class ImportFileException extends Exception
      */
     public static function unsupported($type)
     {
-        return new static(strtoupper($type) . " is unsupported at this time");
+        return new static(strtoupper($type).' is unsupported at this time');
     }
 
     /**
@@ -24,7 +24,7 @@ class ImportFileException extends Exception
      */
     public static function noExtension()
     {
-        return new static("Filename must contain an extension (Example: import.csv, import.json)");
+        return new static('Filename must contain an extension (Example: import.csv, import.json)');
     }
 
     /**
@@ -47,9 +47,8 @@ class ImportFileException extends Exception
      */
     public static function invalidSyntax($filename, $error = null)
     {
-        return new static("Errors detected in structure of {$filename}" . ($error ? ': ' . $error : ''));
+        return new static("Errors detected in structure of {$filename}".($error ? ': ' . $error : ''));
     }
-
 
     /**
      * Unable to get the list of fields/columns from file
@@ -58,6 +57,6 @@ class ImportFileException extends Exception
      */
     public static function noFields()
     {
-        return new static("Could not get a list of fields from the file");
+        return new static('Could not get a list of fields from the file');
     }
 }

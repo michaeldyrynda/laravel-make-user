@@ -50,6 +50,6 @@ abstract class TestCase extends Orchestra
 
     public function getFilePath($ext)
     {
-        return realpath(realpath(__DIR__) . '/../storage/framework/testing').'/import.'.$ext;
+        return realpath(realpath(__DIR__).'/../storage/framework/testing').'/import.'.$ext;
     }
 }

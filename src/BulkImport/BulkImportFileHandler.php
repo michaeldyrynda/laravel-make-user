@@ -4,10 +4,10 @@ namespace Dyrynda\Artisan\BulkImport;
 
 interface BulkImportFileHandler
 {
-	public function __construct($filePath);
+    public function __construct($filePath);
 
     /**
-     * Retrieve data from file
+     * Retrieve data from file.
      *
      * @return array
      */

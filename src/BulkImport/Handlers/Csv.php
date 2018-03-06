@@ -47,7 +47,7 @@ class Csv extends Base implements BulkImportFileHandler
     }
 
     /**
-     * Get list of columns from the file
+     * Get list of columns from the file.
      *
      * @return array
      */
@@ -58,5 +58,5 @@ class Csv extends Base implements BulkImportFileHandler
         $fields = array_filter(array_map('strtolower', array_map('trim', $this->fileHandle->current())));
 
         return $fields;
-    }    
+    }
 }
