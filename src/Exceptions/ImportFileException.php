@@ -24,7 +24,7 @@ class ImportFileException extends Exception
      */
     public static function noExtension()
     {
-        return new static("Filename must contain an extension (Example: import.csv, import .json)");
+        return new static("Filename must contain an extension (Example: import.csv, import.json)");
     }
 
     /**

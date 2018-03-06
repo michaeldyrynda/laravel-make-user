@@ -53,10 +53,10 @@ class MakeUser extends Command
 
                 $sendReset = false;
 
-                if (! in_array('password', array_keys($dataToProcess[0]))) {
-                    $dataToProcess = $this->setDefaultPassword($dataToProcess);
+                if (! in_array('password', array_keys($dataToProcess[0])) || $this->option('send-reset')) {
                     $sendReset = true;
                 }
+                $dataToProcess = $this->setPasswords($dataToProcess);
 
             } else {
                 $email = $this->option('email');
@@ -204,10 +204,13 @@ class MakeUser extends Command
      * @return array
      *
      */
-    private function setDefaultPassword($data)
+    private function setPasswords($data)
     {
         return collect($data)->map(function($row){
-            return array_merge(['password' => str_random(32)], $row);
+            return array_merge(
+                $row,
+                ! isset($row['password']) ? ['password' => str_random(32)] : ['password' => bcrypt($row['password'])]
+            );
         })->all();
     }
 }

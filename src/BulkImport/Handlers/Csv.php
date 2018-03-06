@@ -55,7 +55,7 @@ class Csv extends Base implements BulkImportFileHandler
     {
         $this->fileHandle->rewind();
 
-        $fields = array_filter(array_map('trim', $this->fileHandle->current()));
+        $fields = array_filter(array_map('strtolower', array_map('trim', $this->fileHandle->current())));
 
         return $fields;
     }    

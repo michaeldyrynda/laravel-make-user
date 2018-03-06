@@ -38,6 +38,6 @@ class Json extends Base implements BulkImportFileHandler
     {
         $data = json_decode(file_get_contents($this->filePath), true);
 
-        return isset($data[0]) ? array_map('trim', array_keys($data[0])) : [];
+        return isset($data[0]) ? array_map('strtolower', array_map('trim', array_keys($data[0]))) : [];
     }    
 }
