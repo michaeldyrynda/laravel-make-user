@@ -405,7 +405,7 @@ class MakeUserTest extends TestCase
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
             $this->assertNull($user->admin);
-        });        
+        });
     }
 
     /** @test */
@@ -430,7 +430,7 @@ class MakeUserTest extends TestCase
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
             $this->assertNull($user->force_filled);
-        }); 
+        });
     }
 
     /** @test */
@@ -454,7 +454,7 @@ class MakeUserTest extends TestCase
             $this->assertNotNull($user);
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
-            $this->assertEquals("it works", $user->force_filled);            
+            $this->assertEquals('it works', $user->force_filled);            
         });
     }
 

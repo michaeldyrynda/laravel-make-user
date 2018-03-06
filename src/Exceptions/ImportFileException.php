@@ -18,7 +18,7 @@ class ImportFileException extends Exception
     }
 
     /**
-     * File has no extension
+     * File has no extension.
      *
      * @return \Dyrynda\Artisan\Exceptions\ImportFileException
      */
@@ -28,7 +28,7 @@ class ImportFileException extends Exception
     }
 
     /**
-     * File doesn't exist
+     * File doesn't exist.
      *
      * @param  string  $path
      * @return \Dyrynda\Artisan\Exceptions\ImportFileException
@@ -39,7 +39,7 @@ class ImportFileException extends Exception
     }
 
     /**
-     * File syntax is invalid
+     * File syntax is invalid.
      *
      * @param  string  $filename
      * @param  string|null  $error
@@ -47,11 +47,11 @@ class ImportFileException extends Exception
      */
     public static function invalidSyntax($filename, $error = null)
     {
-        return new static("Errors detected in structure of {$filename}".($error ? ': ' . $error : ''));
+        return new static("Errors detected in structure of {$filename}".($error ? ': '.$error : ''));
     }
 
     /**
-     * Unable to get the list of fields/columns from file
+     * Unable to get the list of fields/columns from file.
      *
      * @return \Dyrynda\Artisan\Exceptions\ImportFileException
      */
