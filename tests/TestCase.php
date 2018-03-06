@@ -11,7 +11,7 @@ abstract class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->destroyFiles();
+        // $this->destroyFiles();
 
         $this->loadLaravelMigrations('testing');
 
@@ -44,8 +44,8 @@ abstract class TestCase extends Orchestra
 
     private function destroyFiles()
     {
-        @unlink($this->getFilePath('csv'));
-        @unlink($this->getFilePath('json'));
+        // @unlink($this->getFilePath('csv'));
+        // @unlink($this->getFilePath('json'));
     }
 
     public function getFilePath($ext)
