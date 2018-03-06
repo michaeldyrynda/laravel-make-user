@@ -43,8 +43,10 @@ class MakeUser extends Command
      */
     public function handle()
     {
+        $dataToProcess = [];
+
         try {
-            $bulkImportFile = $this->option('import-file') ? $this->fileHandlerFactory($this->option('import-file')) : null;
+            $bulkImportFile = is_string($this->option('import-file')) ? $this->fileHandlerFactory($this->option('import-file')) : null;
 
             $modelCommand = $this->option('force') ? 'forceCreate' : 'create';
 
@@ -91,18 +93,23 @@ class MakeUser extends Command
                 app('db')->commit();
             }
 
-            $createdMessage = $bulkImportFile
-                ? "Created " . count($dataToProcess) . " user(s)."
-                : "Created new user for email {$email}.";
+            if (count($dataToProcess)) {
+                $createdMessage = $bulkImportFile
+                    ? "Created " . count($dataToProcess) . " user(s)."
+                    : "Created new user for email {$email}.";
 
-            $passwordResetMessage =  $bulkImportFile
-                ? "Sent password reset emails."
-                : "Sent password reset email to {$email}.";
+                $passwordResetMessage =  $bulkImportFile
+                    ? "Sent password reset emails."
+                    : "Sent password reset email to {$email}.";
 
-            $this->info($createdMessage);
+                $this->info($createdMessage);
 
-            if ($sendReset) {
-                $this->info($passwordResetMessage);
+                if ($sendReset) {
+                    $this->info($passwordResetMessage);
+                }
+                
+            } else {
+                $this->error('The user(s) were not created');
             }
 
         } catch (Exception $e) {
