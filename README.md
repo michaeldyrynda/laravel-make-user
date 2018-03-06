@@ -51,6 +51,14 @@ php artisan make:user --import-file=./dumps/users.json
 ```
 
  `--import-file` takes a path and filename to import users from. The filename **MUST** contain the extension representing the type of file being used. If the import file doesnt contain a password field then the `--send-reset` option is implicit.  A default password will be generated and a password reset notification sent to the user. Data for additional columns may also be included in the import files with support from the `--force` option as described previously.
+  
+  Sample CSV file:
+ ```
+ email,name,password,avatar
+ "jon@email.com","jon doe","password321","image.jpg"
+ ```
+ NOTE: When a CSV file is being used, the first row **MUST** contain the fields names. 
+ 
  
  Sample JSON file:
  ```
@@ -72,8 +80,7 @@ php artisan make:user --import-file=./dumps/users.json
 
 ```
  
-NOTE: When  `--import-file` is used, the `--email`,  `--password`, `--name`, `--fields` options are ignored. 
-
+NOTE: When  `--import-file` is used, the `--email`,  `--password`, `--name`, `--fields` options are ignored.
 
 ## Installation
 
