@@ -4,8 +4,9 @@ namespace Dyrynda\Artisan\BulkImport\Handlers;
 
 use SplFileInfo;
 use Dyrynda\Artisan\Exceptions\ImportFileException;
+use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
 
-abstract class Base
+abstract class Base implements BulkImportFileHandler
 {
     protected $file;
     protected $fields;
@@ -18,18 +19,18 @@ abstract class Base
      *
      * @throws \Dyrynda\Artisan\Exceptions\ImportFileException
      */
-    public function __construct($filePath)
+    public function __construct(SplFileInfo $file)
     {
-        $this->filePath = $filePath;
+        $this->file = $file;
 
-        $this->file = new SplFileInfo($filePath);
+        $this->filePath = $file->getPathname();
 
         if (! $this->file->getExtension()) {
             throw ImportFileException::noExtension();
         }
 
         if (! $this->file->isFile()) {
-            throw ImportFileException::notExist($filePath);
+            throw ImportFileException::notExist($this->filePath);
         }
 
         $this->fileHandle = $this->file->openFile();
@@ -40,7 +41,15 @@ abstract class Base
     /**
      * Checks file for valid syntax.
      *
+     * @return void
      * @throws \Dyrynda\Artisan\Exceptions\ImportFileException
      */
     abstract protected function validateSyntax();
+
+    /**
+     * Get the info from the file.
+     *
+     * @return array
+     */
+    abstract public function getData();
 }

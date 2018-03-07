@@ -1,0 +1,3 @@
+email,name,password,admin,force_filled
+"jon@email.com","jon","pass123",true,"yes"
+"jane@email.com","jane","pass456",false,"no"

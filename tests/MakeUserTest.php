@@ -122,7 +122,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_file_with_extension()
     {
         Artisan::call('make:user', [
-            '--import-file' => 'file-without-ext',
+            '--import-file' => __DIR__ . '/data_files/file-without-ext',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -142,31 +142,17 @@ class MakeUserTest extends TestCase
     public function it_requires_a_file_of_supported_type()
     {
         Artisan::call('make:user', [
-            '--import-file' => 'file.invalid-extension',
+            '--import-file' => __DIR__ . '/data_files/file.invalid-extension',
         ]);
 
         $this->assertFileNotCreatedMsg();
     }
 
     /** @test */
-    public function it_requires_a_non_empty_csv()
+    public function it_requires_a_non_empty_file()
     {
-        $this->createFile('', 'csv');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('csv'),
-        ]);
-
-        $this->assertFileNotCreatedMsg();
-    }
-
-    /** @test */
-    public function it_requires_a_non_empty_json()
-    {
-        $this->createFile('', 'json');
-
-        Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/empty.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -175,12 +161,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_requires_a_well_formed_csv_file()
     {
-        // trailing comma in header record
-        $this->createFile("name,email,password,\n\"jon\",\"jon@email.com\",\"pass123\"", 'csv'
-        );
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('csv'),
+            '--import-file' => __DIR__ . '/data_files/invalid.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -189,17 +171,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_requires_a_well_formed_json_file()
     {
-        // trailing commas
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com", 
-                "password" : "pass123",
-            },
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/invalid.json',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -208,28 +181,18 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_requires_valid_email_addresses_in_json()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "bad-email-addy" 
-            },
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/bad-email.json',
         ]);
 
         $this->assertFileNotCreatedMsg();
-    }  
+    }
 
     /** @test */
     public function it_requires_valid_email_addresses_in_csv()
     {
-        $this->createFile("name,email,password\n\"jon\",\"bad-email.com\",\"pass123\"", 'csv'
-        );
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('csv'),
+            '--import-file' => __DIR__ . '/data_files/bad-email.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -238,11 +201,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_csv_and_hashes_the_password()
     {
-        $this->createFile("name,email,password\n\"jon\",\"jon@email.com\",\"pass123\"\n\"jane\",\"jane@email.com\",\"pass456\"", 'csv'
-        );
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('csv'),
+            '--import-file' => __DIR__ . '/data_files/valid.csv',
         ]);
 
         $user1 = User::where([
@@ -265,11 +225,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_csv_that_excludes_password_but_creates_default_one()
     {
-        $this->createFile("name,email\n\"jon\",\"jon@email.com\"\n\"jane\",\"jane@email.com\"", 'csv'
-        );
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('csv'),
+            '--import-file' => __DIR__ . '/data_files/no-password.csv',
         ]);
 
         $user1 = User::where([
@@ -292,21 +249,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_json_and_hashes_the_password()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com", 
-                "password" : "pass123"
-            },
-            {
-                "name" : "jane", 
-                "email" : "jane@email.com", 
-                "password" : "pass456"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
         ]);
 
         $user1 = User::where([
@@ -329,19 +273,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_json_that_excludes_password_but_creates_default_one()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com"
-            },
-            {
-                "name" : "jane", 
-                "email" : "jane@email.com"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/no-password.json',
         ]);
 
         $user1 = User::where([
@@ -364,16 +297,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_file_and_fills_additional_fields_when_specified()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "admin" : true
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
         ]);
 
         tap(User::first(), function ($user) {
@@ -381,48 +306,15 @@ class MakeUserTest extends TestCase
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
             $this->assertEquals($user->admin, true);
-        });
-    }
-
-    /** @test */
-    public function it_imports_file_and_handles_null_field_values_correctly()
-    {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "password" : "sadfsadf",
-                "admin" : null
-            }
-        ]', 'json');
-
-        Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
-        ]);
-
-        tap(User::first(), function ($user) {
-            $this->assertNotNull($user);
-            $this->assertEquals($user->name, 'jon');
-            $this->assertEquals($user->email, 'jon@email.com');
-            $this->assertNull($user->admin);
+            $this->assertNull($user->force_filled);
         });
     }
 
     /** @test */
     public function it_imports_file_and_ignores_guarded_properties()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "password" : "sadfsadf",
-                "force_filled" : "it works"
-            }
-        ]', 'json');
-
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
         ]);
 
         tap(User::first(), function ($user) {
@@ -436,17 +328,8 @@ class MakeUserTest extends TestCase
     /** @test */
     public function it_imports_file_and_force_fills_guarded_properties_when_instructed()
     {
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "password" : "sadfsadf",
-                "force_filled" : "it works"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
             '--force' => true,
         ]);
 
@@ -454,7 +337,7 @@ class MakeUserTest extends TestCase
             $this->assertNotNull($user);
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
-            $this->assertEquals('it works', $user->force_filled);            
+            $this->assertEquals('yes', $user->force_filled);
         });
     }
 
@@ -463,15 +346,8 @@ class MakeUserTest extends TestCase
     {
         Notification::fake();
 
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/no-password.json',
         ]);
 
         Notification::assertSentTo(User::first(), ResetPassword::class);
@@ -488,16 +364,8 @@ class MakeUserTest extends TestCase
     {
         Notification::fake();
 
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "password" : "qfrfqfqrfq"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
         ]);
 
         Notification::assertNotSentTo(User::first(), ResetPassword::class);
@@ -514,16 +382,8 @@ class MakeUserTest extends TestCase
     {
         Notification::fake();
 
-        $this->createFile('[
-            {
-                "name" : "jon", 
-                "email" : "jon@email.com",
-                "password" : "qfrfqfqrfq"
-            }
-        ]', 'json');
-
         Artisan::call('make:user', [
-            '--import-file' => $this->getFilePath('json'),
+            '--import-file' => __DIR__ . '/data_files/valid.json',
             '--send-reset' => true,
         ]);
 
@@ -534,11 +394,6 @@ class MakeUserTest extends TestCase
             $this->assertEquals($user->name, 'jon');
             $this->assertEquals($user->email, 'jon@email.com');
         });
-    }
-
-    private function createFile($contents, $type)
-    {
-        file_put_contents($this->getFilePath($type), $contents);
     }
 
     private function assertFileNotCreatedMsg()

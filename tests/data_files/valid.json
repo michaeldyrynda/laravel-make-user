@@ -1,0 +1,16 @@
+[
+    {
+        "email": "jon@email.com",
+        "name": "jon",
+        "password": "pass123",
+        "admin": true,
+        "force_filled": "yes"
+    },
+    {
+        "email": "jane@email.com",
+        "name": "jane",
+        "password": "pass456",
+        "admin": true,
+        "force_filled": "no"
+    }
+]

@@ -2,12 +2,14 @@
 
 namespace Dyrynda\Artisan\BulkImport;
 
+use SplFileInfo;
+
 interface BulkImportFileHandler
 {
-    public function __construct($filePath);
+    public function __construct(SplFileInfo $filePath);
 
     /**
-     * Retrieve data from file.
+     * Get the info from the file.
      *
      * @return array
      */

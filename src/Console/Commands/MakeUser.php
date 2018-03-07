@@ -201,7 +201,7 @@ class MakeUser extends Command
             throw ImportFileException::unsupported($file->getExtension());
         }
 
-        return new $class($path);
+        return new $class($file);
     }
 
     /**

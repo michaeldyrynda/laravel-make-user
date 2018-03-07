@@ -4,9 +4,8 @@ namespace Dyrynda\Artisan\BulkImport\Handlers;
 
 use SplFileObject;
 use Dyrynda\Artisan\Exceptions\ImportFileException;
-use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
 
-class Csv extends Base implements BulkImportFileHandler
+class Csv extends Base
 {
     public function __construct($file)
     {
