@@ -3,9 +3,8 @@
 namespace Dyrynda\Artisan\BulkImport\Handlers;
 
 use Dyrynda\Artisan\Exceptions\ImportFileException;
-use Dyrynda\Artisan\BulkImport\BulkImportFileHandler;
 
-class Json extends Base implements BulkImportFileHandler
+class Json extends Base
 {
     public function getData()
     {

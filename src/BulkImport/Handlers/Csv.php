@@ -2,12 +2,13 @@
 
 namespace Dyrynda\Artisan\BulkImport\Handlers;
 
+use SplFileInfo;
 use SplFileObject;
 use Dyrynda\Artisan\Exceptions\ImportFileException;
 
 class Csv extends Base
 {
-    public function __construct($file)
+    public function __construct(SplFileInfo $file)
     {
         parent::__construct($file);
 

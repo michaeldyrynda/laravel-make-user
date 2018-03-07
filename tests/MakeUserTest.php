@@ -329,7 +329,7 @@ class MakeUserTest extends TestCase
     public function it_imports_file_and_force_fills_guarded_properties_when_instructed()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__ . '/data_files/valid.csv',
             '--force' => true,
         ]);
 
