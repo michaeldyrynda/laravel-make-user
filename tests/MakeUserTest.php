@@ -122,7 +122,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_file_with_extension()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/file-without-ext',
+            '--import-file' => __DIR__.'/data_files/file-without-ext',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -142,7 +142,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_file_of_supported_type()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/file.invalid-extension',
+            '--import-file' => __DIR__.'/data_files/file.invalid-extension',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -152,7 +152,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_non_empty_file()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/empty.csv',
+            '--import-file' => __DIR__.'/data_files/empty.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -162,7 +162,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_well_formed_csv_file()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/invalid.csv',
+            '--import-file' => __DIR__.'/data_files/invalid.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -172,7 +172,7 @@ class MakeUserTest extends TestCase
     public function it_requires_a_well_formed_json_file()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/invalid.json',
+            '--import-file' => __DIR__.'/data_files/invalid.json',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -182,7 +182,7 @@ class MakeUserTest extends TestCase
     public function it_requires_valid_email_addresses_in_json()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/bad-email.json',
+            '--import-file' => __DIR__.'/data_files/bad-email.json',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -192,7 +192,7 @@ class MakeUserTest extends TestCase
     public function it_requires_valid_email_addresses_in_csv()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/bad-email.csv',
+            '--import-file' => __DIR__.'/data_files/bad-email.csv',
         ]);
 
         $this->assertFileNotCreatedMsg();
@@ -202,7 +202,7 @@ class MakeUserTest extends TestCase
     public function it_imports_csv_and_hashes_the_password()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.csv',
+            '--import-file' => __DIR__.'/data_files/valid.csv',
         ]);
 
         $user1 = User::where([
@@ -226,7 +226,7 @@ class MakeUserTest extends TestCase
     public function it_imports_csv_that_excludes_password_but_creates_default_one()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/no-password.csv',
+            '--import-file' => __DIR__.'/data_files/no-password.csv',
         ]);
 
         $user1 = User::where([
@@ -250,7 +250,7 @@ class MakeUserTest extends TestCase
     public function it_imports_json_and_hashes_the_password()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__.'/data_files/valid.json',
         ]);
 
         $user1 = User::where([
@@ -274,7 +274,7 @@ class MakeUserTest extends TestCase
     public function it_imports_json_that_excludes_password_but_creates_default_one()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/no-password.json',
+            '--import-file' => __DIR__.'/data_files/no-password.json',
         ]);
 
         $user1 = User::where([
@@ -298,7 +298,7 @@ class MakeUserTest extends TestCase
     public function it_imports_file_and_fills_additional_fields_when_specified()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__.'/data_files/valid.json',
         ]);
 
         tap(User::first(), function ($user) {
@@ -314,7 +314,7 @@ class MakeUserTest extends TestCase
     public function it_imports_file_and_ignores_guarded_properties()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__.'/data_files/valid.json',
         ]);
 
         tap(User::first(), function ($user) {
@@ -329,7 +329,7 @@ class MakeUserTest extends TestCase
     public function it_imports_file_and_force_fills_guarded_properties_when_instructed()
     {
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.csv',
+            '--import-file' => __DIR__.'/data_files/valid.csv',
             '--force' => true,
         ]);
 
@@ -347,7 +347,7 @@ class MakeUserTest extends TestCase
         Notification::fake();
 
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/no-password.json',
+            '--import-file' => __DIR__.'/data_files/no-password.json',
         ]);
 
         Notification::assertSentTo(User::first(), ResetPassword::class);
@@ -365,7 +365,7 @@ class MakeUserTest extends TestCase
         Notification::fake();
 
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__.'/data_files/valid.json',
         ]);
 
         Notification::assertNotSentTo(User::first(), ResetPassword::class);
@@ -383,7 +383,7 @@ class MakeUserTest extends TestCase
         Notification::fake();
 
         Artisan::call('make:user', [
-            '--import-file' => __DIR__ . '/data_files/valid.json',
+            '--import-file' => __DIR__.'/data_files/valid.json',
             '--send-reset' => true,
         ]);
 
