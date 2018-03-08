@@ -15,11 +15,6 @@ before_install: travis_retry composer require "illuminate/database:${ILLUMINATE_
 
 install: travis_retry composer install --prefer-dist --no-interaction --no-suggest -v
 
-before_script:
-  - touch import.csv
-  - touch import.json
-  - chmod a+w -R import.csv import.json
-
 script: vendor/bin/phpunit --debug -c phpunit.xml --coverage-clover=coverage.clover
 
 after_script:
