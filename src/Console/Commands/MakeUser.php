@@ -59,7 +59,6 @@ class MakeUser extends Command
                     $sendReset = true;
                 }
                 $dataToProcess = $this->setPasswords($dataToProcess);
-
             } else {
                 $email = $this->option('email');
                 $name = $this->option('name') ?: '';
@@ -74,7 +73,6 @@ class MakeUser extends Command
             }
 
             foreach ($dataToProcess as $dataRow) {
-
                 $email = $dataRow['email'] ?? null;
 
                 app('db')->beginTransaction();
@@ -107,11 +105,9 @@ class MakeUser extends Command
                 if ($sendReset) {
                     $this->info($passwordResetMessage);
                 }
-
             } else {
                 $this->error('The user(s) were not created');
             }
-
         } catch (Exception $e) {
             $this->error($e->getMessage());
 

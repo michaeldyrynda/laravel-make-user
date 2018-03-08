@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests;
 
 use Illuminate\Support\Facades\Hash;
@@ -118,6 +117,7 @@ class MakeUserTest extends TestCase
     //----------------------------------------------------------------------------------
     // BULK IMPORT TESTS
     //----------------------------------------------------------------------------------
+
     /** @test */
     public function it_requires_a_file_with_extension()
     {
@@ -215,11 +215,10 @@ class MakeUserTest extends TestCase
             'email' => 'jane@email.com',
         ])->first();
 
-        $this->assertTrue(
-            ! is_null($user1) && Hash::check('pass123', $user1->password)
-            &&
-            ! is_null($user2) && Hash::check('pass456', $user2->password)
-        );
+        $this->assertNotNull($user1);
+        $this->assertTrue(Hash::check('pass123', $user1->password));
+        $this->assertNotNull($user2);
+        $this->assertTrue(Hash::check('pass456', $user2->password));
     }
 
     /** @test */
@@ -239,11 +238,10 @@ class MakeUserTest extends TestCase
             'email' => 'jane@email.com',
         ])->first();
 
-        $this->assertTrue(
-            ! is_null($user1) && ! is_null($user1->password)
-            &&
-            ! is_null($user2) && ! is_null($user2->password)
-        );
+        $this->assertNotNull($user1);
+        $this->assertNotNull($user1->password);
+        $this->assertNotNull($user2);
+        $this->assertNotNull($user2->password);
     }
 
     /** @test */
@@ -263,11 +261,10 @@ class MakeUserTest extends TestCase
             'email' => 'jane@email.com',
         ])->first();
 
-        $this->assertTrue(
-            ! is_null($user1) && Hash::check('pass123', $user1->password)
-            &&
-            ! is_null($user2) && Hash::check('pass456', $user2->password)
-        );
+        $this->assertNotNull($user1);
+        $this->assertTrue(Hash::check('pass123', $user1->password));
+        $this->assertNotNull($user2);
+        $this->assertTrue(Hash::check('pass456', $user2->password));
     }
 
     /** @test */
@@ -287,11 +284,10 @@ class MakeUserTest extends TestCase
             'email' => 'jane@email.com',
         ])->first();
 
-        $this->assertTrue(
-            ! is_null($user1) && ! is_null($user1->password)
-            &&
-            ! is_null($user2) && ! is_null($user2->password)
-        );
+        $this->assertNotNull($user1);
+        $this->assertNotNull($user1->password);
+        $this->assertNotNull($user2);
+        $this->assertNotNull($user2->password);
     }
 
     /** @test */
