@@ -13,12 +13,12 @@ class MakeUserTest extends TestCase
     public function it_creates_a_new_user()
     {
         $this->artisan('make:user')
-            ->expectsQuestion("What is the new user's email address?", "user@example.com")
-            ->expectsQuestion("What is the new user's name?", "Test User")
-            ->expectsQuestion("What is the new user's password? (blank generates a random one)", "")
-            ->expectsQuestion("Do you wish to force creation?", "no")
-            ->expectsQuestion("Do you want to send a password reset email?", "no")
-            ->expectsQuestion("Do you have any custom user fields to add? Field=Value (blank continues)", "");
+            ->expectsQuestion("What is the new user's email address?", 'user@example.com')
+            ->expectsQuestion("What is the new user's name?", 'Test User')
+            ->expectsQuestion("What is the new user's password? (blank generates a random one)", '')
+            ->expectsQuestion('Do you wish to force creation?', 'no')
+            ->expectsQuestion('Do you want to send a password reset email?', 'no')
+            ->expectsQuestion('Do you have any custom user fields to add? Field=Value (blank continues)', '');
 
         $this->assertDatabaseHas('users', [
             'email' => 'user@example.com',
