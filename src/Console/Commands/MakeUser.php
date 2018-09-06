@@ -42,7 +42,6 @@ class MakeUser extends Command
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
         $password = bcrypt($this->secret("What is the new user's password? (blank generates a random one)", str_random(32)));
-        $modelCommand = $this->confirm("Do you wish to force creation?") ? 'forceCreate' : 'create';
         $sendReset = $this->confirm("Do you want to send a password reset email?");
 
         while ($custom = $this->ask("Do you have any custom user fields to add? Field=Value (blank continues)", false)) {
@@ -55,9 +54,7 @@ class MakeUser extends Command
 
             $this->validateEmail($email);
 
-            app('db')->enableQueryLog();
-
-            app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
+            app(config('auth.providers.users.model'))->create(array_merge(
                 compact('email', 'name', 'password'),
                 $this->customFields
             ));
