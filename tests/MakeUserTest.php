@@ -10,11 +10,20 @@ use Illuminate\Auth\Notifications\ResetPassword;
 class MakeUserTest extends TestCase
 {
     /** @test */
-    public function it_requires_a_valid_email_address()
+    public function it_creates_a_new_user()
     {
-        Artisan::call('make:user', ['email' => 'invalidemail']);
+        $this->artisan('make:user')
+            ->expectsQuestion("What is the new user's email address?", "user@example.com")
+            ->expectsQuestion("What is the new user's name?", "Test User")
+            ->expectsQuestion("What is the new user's password? (blank generates a random one)", "")
+            ->expectsQuestion("Do you wish to force creation?", "no")
+            ->expectsQuestion("Do you want to send a password reset email?", "no")
+            ->expectsQuestion("Do you have any custom user fields to add? Field=Value (blank continues)", "");
 
-        $this->assertFalse(User::where('email', 'invalidemail')->exists());
+        $this->assertDatabaseHas('users', [
+            'email' => 'user@example.com',
+            'name' => 'Test User',
+        ]);
     }
 
     /** @test */

@@ -14,11 +14,7 @@ class MakeUser extends Command
      *
      * @var string
      */
-    protected $signature = 'make:user {email} {--name=      : Set the name for the new user}
-                                              {--password=  : The password to set for the new user}
-                                              {--send-reset : Send a password reset email for the new user}
-                                              {--fields=    : Additional database fields to set on the user}
-                                              {--force      : Create the user model circumventing guarded fields}';
+    protected $signature = 'make:user';
 
     /**
      * The console command description.
@@ -26,6 +22,13 @@ class MakeUser extends Command
      * @var string
      */
     protected $description = 'Create a new application user';
+
+    /**
+     * Array of custom fields to attach to the user.
+     *
+     * @var array
+     */
+    protected $customFields = [];
 
     /**
      * Execute the console command.
@@ -36,20 +39,27 @@ class MakeUser extends Command
      */
     public function handle()
     {
-        $email = $this->argument('email');
-        $name = $this->option('name') ?: '';
-        $password = bcrypt($this->option('password') ?: str_random(32));
-        $modelCommand = $this->option('force') ? 'forceCreate' : 'create';
-        $sendReset = ! $this->option('password') || $this->option('send-reset');
+        $email = $this->ask("What is the new user's email address?");
+        $name = $this->ask("What is the new user's name?") ?: '';
+        $password = bcrypt($this->secret("What is the new user's password? (blank generates a random one)", str_random(32)));
+        $modelCommand = $this->confirm("Do you wish to force creation?") ? 'forceCreate' : 'create';
+        $sendReset = $this->confirm("Do you want to send a password reset email?");
+
+        while ($custom = $this->ask("Do you have any custom user fields to add? Field=Value (blank continues)", false)) {
+            list($key, $value) = explode('=', $custom);
+            $this->customFields[$key] = value($value);
+        }
 
         try {
             app('db')->beginTransaction();
 
             $this->validateEmail($email);
 
+            app('db')->enableQueryLog();
+
             app(config('auth.providers.users.model'))->{$modelCommand}(array_merge(
                 compact('email', 'name', 'password'),
-                $this->additionalFields()
+                $this->customFields
             ));
 
             if ($sendReset) {
@@ -87,46 +97,5 @@ class MakeUser extends Command
         if (app(config('auth.providers.users.model'))->where('email', $email)->exists()) {
             throw MakeUserException::emailExists($email);
         }
-    }
-
-    /**
-     * Return any additional database fields passed by the --fields option.
-     *
-     * @return array
-     */
-    private function additionalFields()
-    {
-        if (! $this->option('fields')) {
-            return [];
-        }
-
-        return collect(explode(',', $this->option('fields')))->mapWithKeys(function ($field) {
-            list($column, $value) = explode(':', $field);
-
-            return [trim($column) => $this->normaliseValue($value)];
-        })->toArray();
-    }
-
-    /**
-     * Normalise the given (database) field input value.
-     *
-     * @param  mixed  $value
-     * @return mixed
-     */
-    private function normaliseValue($value)
-    {
-        if ($value == 'null') {
-            return;
-        }
-
-        if (in_array($value, [1, 'true', true], true)) {
-            return true;
-        }
-
-        if (in_array($value, [0, 'false', false], true)) {
-            return false;
-        }
-
-        return trim($value);
     }
 }
