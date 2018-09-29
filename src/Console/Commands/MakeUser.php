@@ -25,28 +25,28 @@ class MakeUser extends Command
     protected $description = 'Create a new application user';
 
     /**
-     * Email address of the new user
+     * Email address of the new user.
      *
      * @var string
      */
     protected $email;
 
     /**
-     * Name of the new user
+     * Name of the new user.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Password for the new user
+     * Password for the new user.
      *
      * @var string
      */
     protected $password;
 
     /**
-     * Whether or not to send a password reset
+     * Whether or not to send a password reset.
      *
      * @var string
      */

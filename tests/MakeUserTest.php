@@ -2,20 +2,19 @@
 
 namespace Tests;
 
-use Tests\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
 
 class MakeUserTest extends TestCase
 {
-    private function makeUser($name = 'Test User', $email, $password = null, $force = 'no', $reset = 'no')
+    private function makeUser($name, $email, $password = null, $force = 'no', $reset = 'no')
     {
         $this->artisan('make:user')
             ->expectsQuestion("What is the new user's name?", $name)
             ->expectsQuestion("What is the new user's email address?", $email)
             ->expectsQuestion("What is the new user's password? (blank generates a random one)", $password)
-            ->expectsQuestion("Do you wish to force creation?", $force)
-            ->expectsQuestion("Do you want to send a password reset email?", $reset);
+            ->expectsQuestion('Do you wish to force creation?', $force)
+            ->expectsQuestion('Do you want to send a password reset email?', $reset);
 
         dump(User::all()->toArray());
     }
