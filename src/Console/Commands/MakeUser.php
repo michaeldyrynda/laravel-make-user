@@ -4,6 +4,7 @@ namespace Dyrynda\Artisan\Console\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
 
@@ -24,11 +25,32 @@ class MakeUser extends Command
     protected $description = 'Create a new application user';
 
     /**
-     * Array of custom fields to attach to the user.
+     * Email address of the new user
      *
-     * @var array
+     * @var string
      */
-    protected $customFields = [];
+    protected $email;
+
+    /**
+     * Name of the new user
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * Password for the new user
+     *
+     * @var string
+     */
+    protected $password;
+
+    /**
+     * Whether or not to send a password reset
+     *
+     * @var string
+     */
+    protected $sendReset;
 
     /**
      * Execute the console command.
@@ -39,33 +61,22 @@ class MakeUser extends Command
      */
     public function handle()
     {
-        $email = $this->ask("What is the new user's email address?");
-        $name = $this->ask("What is the new user's name?") ?: '';
-        $password = bcrypt($this->secret("What is the new user's password? (blank generates a random one)", str_random(32)));
-        $sendReset = $this->confirm('Do you want to send a password reset email?');
+        $this->name = $this->ask("What is the new user's name?") ?: '';
+        $this->email = $this->ask("What is the new user's email address?");
+        $this->password = bcrypt($this->secret("What is the new user's password? (blank generates a random one)", str_random(32)));
 
-        while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
-            list($key, $value) = explode('=', $custom);
-            $this->customFields[$key] = value($value);
+        if (Route::has('password.reset')) {
+            $this->sendReset = $this->confirm('Do you want to send a password reset email?');
         }
 
         try {
             app('db')->beginTransaction();
 
-            $this->validateEmail($email);
+            $this->validateEmail();
 
-            app(config('auth.providers.users.model'))->create(array_merge(
-                compact('email', 'name', 'password'),
-                $this->customFields
-            ));
+            $this->createUser();
 
-            if ($sendReset) {
-                Password::sendResetLink(compact('email'));
-
-                $this->info("Sent password reset email to {$email}");
-            }
-
-            $this->info("Created new user for email {$email}");
+            $this->sendReset();
 
             app('db')->commit();
         } catch (Exception $e) {
@@ -78,21 +89,50 @@ class MakeUser extends Command
     }
 
     /**
+     * Create the new application user.
+     *
+     * @return bool
+     */
+    private function createUser()
+    {
+        $this->task('Creating user', function () {
+            return app(config('auth.providers.users.model'))->create([
+                'email' => $this->email,
+                'name' => $this->name,
+                'password' => $this->password,
+            ]);
+        });
+    }
+
+    /**
+     * Send the password reset.
+     *
+     * @return void
+     */
+    private function sendReset()
+    {
+        if ($this->sendReset) {
+            $this->task('Sending password reset email', function () {
+                Password::sendResetLink(['email' => $this->email]);
+            });
+        }
+    }
+
+    /**
      * Determine if the given email address already exists.
      *
-     * @param  string  $email
      * @return void
      *
      * @throws \Dyrynda\Artisan\Exceptions\MakeUserException
      */
-    private function validateEmail($email)
+    private function validateEmail()
     {
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw MakeUserException::invalidEmail($email);
+        if (! filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            throw MakeUserException::invalidEmail($this->email);
         }
 
-        if (app(config('auth.providers.users.model'))->where('email', $email)->exists()) {
-            throw MakeUserException::emailExists($email);
+        if (app(config('auth.providers.users.model'))->where('email', $this->email)->exists()) {
+            throw MakeUserException::emailExists($this->email);
         }
     }
 }
