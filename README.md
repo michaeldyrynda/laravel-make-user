@@ -1,5 +1,5 @@
 # Laravel Make User
-## v4.0.0
+## v4.1.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -11,7 +11,7 @@
 
 ## Introduction
 
-Out of the box, Laravel makes it really simple to scaffold out with its [authentication quickstart](https://laravel.com/docs/5.7/authentication#authentication-quickstart). Whilst this makes it really easy to register and authenticate users, for many of the applications I find myself building, we usually remove the ability for visitors to register themselves.
+Out of the box, Laravel makes it really simple to scaffold out with its [authentication quickstart](https://laravel.com/docs/5.8/authentication#authentication-quickstart). Whilst this makes it really easy to register and authenticate users, for many of the applications I find myself building, we usually remove the ability for visitors to register themselves.
 
 I still need a way to get users into those applications, however, and whilst they're in early development this usually involves firing up Laravel Tinker. This can be a tedious process, and one that I repeat many times over.
 
@@ -25,6 +25,7 @@ Laravel | Package
 5.5.*   | 2.0.*
 5.6.*   | 3.0.*
 5.7.*   | 4.0.*
+5.8.*   | 5.0.*
 
 ## Code Samples
 
