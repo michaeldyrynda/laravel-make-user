@@ -1,5 +1,5 @@
 # Laravel Make User
-## v5.0.0
+## v4.1.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -19,13 +19,12 @@ This package aims to solve the repetition problem by providing a convenient `mak
 
 ### Version compatibility
 
-Laravel | Package
-:-------|:--------
-5.4.*   | 1.0.*
-5.5.*   | 2.0.*
-5.6.*   | 3.0.*
-5.7.*   | 4.0.*
-5.8.*   | 5.0.*
+Laravel    | Package
+:----------|:--------
+5.4.*      | 1.0.*
+5.5.*      | 2.0.*
+5.6.*      | 3.0.*
+>= 5.7.*   | 4.0.*
 
 ## Code Samples
 
