@@ -19,12 +19,13 @@ This package aims to solve the repetition problem by providing a convenient `mak
 
 ### Version compatibility
 
-Laravel    | Package
-:----------|:--------
-5.4.*      | 1.0.*
-5.5.*      | 2.0.*
-5.6.*      | 3.0.*
->= 5.7.*   | 4.0.*
+Laravel | Package
+:-------|:--------
+5.4.*   | 1.0.*
+5.5.*   | 2.0.*
+5.6.*   | 3.0.*
+5.7.*   | 4.0.*
+5.8.*   | 5.0.*
 
 ## Code Samples
 
