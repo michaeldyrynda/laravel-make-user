@@ -42,7 +42,7 @@ class MakeUser extends Command {
         $password = $this->secret("What is the new user's password? (blank generates a random one)", str_random(32));
         $sendReset = $this->confirm('Do you want to send a password reset email?');
 
-        if (!$this->option('password')) {
+        if (!$this->option('plaintext')) {
             bcrypt($password);
         }
 
