@@ -13,7 +13,7 @@ class MakeUser extends Command {
      *
      * @var string
      */
-    protected $signature = 'make:user {--p|plaintext}';
+    protected $signature = 'make:user';
 
     /**
      * The console command description.
@@ -40,10 +40,11 @@ class MakeUser extends Command {
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
         $password = $this->secret("What is the new user's password? (blank generates a random one)", str_random(32));
+        $encrypt = $this->confirm('Should the password be encrypted?', true);
         $sendReset = $this->confirm('Do you want to send a password reset email?');
 
-        if (!$this->option('plaintext')) {
-            bcrypt($password);
+        if ($encrypt) {
+            $password = bcrypt($password);
         }
 
         while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
