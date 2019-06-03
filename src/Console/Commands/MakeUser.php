@@ -7,13 +7,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
 
-class MakeUser extends Command {
+class MakeUser extends Command 
+{
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:user {--p|plaintext}';
+    protected $signature = 'make:user';
 
     /**
      * The console command description.
@@ -36,14 +37,16 @@ class MakeUser extends Command {
      *
      * @return void
      */
-    public function handle() {
+    public function handle() 
+    {
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
         $password = $this->secret("What is the new user's password? (blank generates a random one)", str_random(32));
+        $encrypt = $this->confirm('Should the password be encrypted?', true);
         $sendReset = $this->confirm('Do you want to send a password reset email?');
 
-        if (!$this->option('plaintext')) { // optional
-            bcrypt($password);
+        if ($encrypt) {
+            $password = bcrypt($password);
         }
 
         while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
@@ -87,7 +90,8 @@ class MakeUser extends Command {
      *
      * @throws \Dyrynda\Artisan\Exceptions\MakeUserException
      */
-    private function validateEmail($email) {
+    private function validateEmail($email) 
+    {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw MakeUserException::invalidEmail($email);
         }
