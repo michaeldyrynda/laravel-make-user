@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
 use Dyrynda\Artisan\Exceptions\MakeUserException;
 
-class MakeUser extends Command 
+class MakeUser extends Command
 {
     /**
      * The name and signature of the console command.
@@ -37,7 +37,7 @@ class MakeUser extends Command
      *
      * @return void
      */
-    public function handle() 
+    public function handle()
     {
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
@@ -50,7 +50,7 @@ class MakeUser extends Command
         }
 
         while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
-            list($key, $value) = explode('=', $custom);
+            [$key, $value] = explode('=', $custom);
             $this->customFields[$key] = value($value);
         }
 
@@ -90,9 +90,9 @@ class MakeUser extends Command
      *
      * @throws \Dyrynda\Artisan\Exceptions\MakeUserException
      */
-    private function validateEmail($email) 
+    private function validateEmail($email)
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw MakeUserException::invalidEmail($email);
         }
 
