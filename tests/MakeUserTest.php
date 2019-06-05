@@ -2,9 +2,10 @@
 
 namespace Tests;
 
-class MakeUserTest extends TestCase {
+class MakeUserTest extends TestCase
+{
     /** @test */
-    public function it_creates_a_new_user() 
+    public function it_creates_a_new_user()
     {
         $this->artisan('make:user')
             ->expectsQuestion("What is the new user's email address?", 'user@example.com')
@@ -16,7 +17,7 @@ class MakeUserTest extends TestCase {
     }
 
     /** @test */
-    public function it_creates_a_new_user_with_additional_fields() 
+    public function it_creates_a_new_user_with_additional_fields()
     {
         $this->artisan('make:user')
             ->expectsQuestion("What is the new user's email address?", 'user@example.com')
