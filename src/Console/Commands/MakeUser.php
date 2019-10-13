@@ -45,7 +45,7 @@ class MakeUser extends Command
         $sendReset = $this->confirm('Do you want to send a password reset email?');
 
         while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
-            list($key, $value) = explode('=', $custom);
+            [$key, $value] = explode('=', $custom);
             $this->customFields[$key] = value($value);
         }
 
