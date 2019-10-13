@@ -26,6 +26,7 @@ Laravel | Package
 5.6.*   | 3.0.*
 5.7.*   | 4.0.*
 5.8.*   | 5.0.*
+6.x     | 6.0.*
 
 ## Code Samples
 
