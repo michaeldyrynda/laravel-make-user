@@ -2,10 +2,10 @@
 
 namespace Dyrynda\Artisan\Console\Commands;
 
+use Dyrynda\Artisan\Exceptions\MakeUserException;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
-use Dyrynda\Artisan\Exceptions\MakeUserException;
 
 class MakeUser extends Command
 {

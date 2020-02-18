@@ -2,8 +2,8 @@
 
 namespace Dyrynda\Artisan;
 
-use Illuminate\Support\ServiceProvider;
 use Dyrynda\Artisan\Console\Commands\MakeUser;
+use Illuminate\Support\ServiceProvider;
 
 class MakeUserServiceProvider extends ServiceProvider
 {
