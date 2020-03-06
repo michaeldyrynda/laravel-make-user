@@ -6,6 +6,7 @@ use Dyrynda\Artisan\Exceptions\MakeUserException;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class MakeUser extends Command
 {
@@ -41,7 +42,7 @@ class MakeUser extends Command
     {
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
-        $password = $this->secret("What is the new user's password? (blank generates a random one)", str_random(32));
+        $password = $this->secret("What is the new user's password? (blank generates a random one)") ?: Str::random(32);
         $encrypt = $this->confirm('Should the password be encrypted?', true);
         $sendReset = $this->confirm('Do you want to send a password reset email?');
 
