@@ -41,8 +41,13 @@ class MakeUser extends Command
     {
         $email = $this->ask("What is the new user's email address?");
         $name = $this->ask("What is the new user's name?") ?: '';
-        $password = bcrypt($this->secret("What is the new user's password? (blank generates a random one)", str_random(32)));
+        $password = $this->secret("What is the new user's password? (blank generates a random one)", str_random(32));
+        $encrypt = $this->confirm('Should the password be encrypted?', true);
         $sendReset = $this->confirm('Do you want to send a password reset email?');
+
+        if ($encrypt) {
+            $password = bcrypt($password);
+        }
 
         while ($custom = $this->ask('Do you have any custom user fields to add? Field=Value (blank continues)', false)) {
             [$key, $value] = explode('=', $custom);
