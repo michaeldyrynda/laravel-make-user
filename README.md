@@ -1,5 +1,5 @@
 # Laravel Make User
-## v5.0.0
+## v7.0.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -28,6 +28,8 @@ Laravel | Package
 5.7.*   | 4.0.*
 5.8.*   | 5.0.*
 6.x     | 6.0.*
+7.x     | 7.0.*
+
 
 ## Code Samples
 
@@ -44,7 +46,7 @@ This package runs on the assumption that you are using Laravel's default `users`
 This package is installed via [Composer](https://getcomposer.org/). To install, run the following command.
 
 ```bash
-composer require "dyrynda/laravel-make-user:~4.0"
+composer require dyrynda/laravel-make-user
 ```
 
 ## Support
