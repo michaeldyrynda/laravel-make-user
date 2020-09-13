@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 7.3, 7.2]
+        php: [7.4, 7.3]
         dependency-version: [prefer-stable, prefer-lowest]
 
     name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
