@@ -2,24 +2,23 @@ name: run-tests
 
 on:
   push:
-    branches:
-      - master
   pull_request:
+    types: [opened, edited]
 
 jobs:
-  run-tests:
+  test:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        php: [8.0, 7.4, 7.3]
-        dependency-version: [prefer-stable, prefer-lowest]
+        php: [8.0, 7.4]
+        dependency-version: [prefer-lowest, prefer-stable]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Cache dependencies
         uses: actions/cache@v1
@@ -31,15 +30,16 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, fileinfo, ftp, redis, memcached
+          tools: composer:v2
           coverage: pcov
 
       - name: Install dependencies
-        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest --no-progress
 
       - name: Execute tests
-        run: vendor/bin/phpunit --debug -c phpunit.xml --coverage-clover=coverage.clover
-
-      - name: Upload coverage
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+        run: vendor/bin/phpunit --coverage-clover=coverage.clover
