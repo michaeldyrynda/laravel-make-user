@@ -1,5 +1,4 @@
 # Laravel Make User
-## v7.0.0
 
 [![Build Status](https://travis-ci.org/michaeldyrynda/laravel-make-user.svg?branch=master)](https://travis-ci.org/michaeldyrynda/laravel-make-user)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-make-user/?branch=master)
@@ -29,6 +28,8 @@ Laravel | Package
 5.8.*   | 5.0.*
 6.x     | 6.0.*
 7.x     | 7.0.*
+8.x     | 7.1.*
+9.x     | 7.4.*
 
 
 ## Code Samples
