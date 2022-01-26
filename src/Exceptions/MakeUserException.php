@@ -20,7 +20,7 @@ class MakeUserException extends InvalidArgumentException
     /**
      * The supplied email already exists.
      *
-     * @param  string $email
+     * @param  string  $email
      * @return \Dyrynda\Artisan\Exceptions\MakeUserException
      */
     public static function emailExists($email)
