@@ -3,16 +3,19 @@ name: run-tests
 on:
   push:
   pull_request:
-    types: [opened, edited]
+    types:
+      - opened
+      - edited
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2,8.1]
-        laravel: [10.0]
+        php: [8.4, 8.3, 8.2]
+        laravel: [11.0]
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
@@ -21,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.composer/cache/files
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
@@ -44,4 +47,4 @@ jobs:
             composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: vendor/bin/phpunit --coverage-clover=coverage.clover
+        run: vendor/bin/pest
